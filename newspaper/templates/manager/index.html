@@ -1,0 +1,38 @@
+ {% extends 'base.html' %}
+ {% block links %}
+<center><a href="{% url 'manager:create_paperboy' %}">Add Paperboy</a></center>
+{% endblock %}
+{% block top %}
+	{% if messages %}
+		{% for message in messages %}
+			<div class="alert alert-primary alert-dismissible fade show" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="left:0;">
+			    	<span aria-hidden="true">&times;</span>
+			  	</button>
+				<center><strong>{{ message }}</strong> </center>
+			</div>
+		{% endfor %}
+	{% endif %}
+{% endblock %}
+{% block content %} 
+	<h1>Your Paper Boys</h1>
+	{% for pboy in available_paperboys %}
+		<div class="col-10 col-lg-6 mr-auto ml-auto">
+			<div class="row my-5 box" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="100">
+				<div class="col-12 col-lg-12" style="">
+					<div class="box-content-custom">
+						<center><h3>Name : {{pboy | upper}}</h3></center>
+						<center><p>Contact Number : {{pboy.pno}}</p></center>
+						<center><a href="{% url 'manager:update_paperboy' pboy.id %}">Update</a>
+						<form method="POST" action="{% url 'manager:delete_paperboy'%}" style="display: inline-block;" class="delete_branch">
+							{% csrf_token %}
+							<input type="hidden" value="{{pboy.id}}" name="id">
+							<input type="submit" value="Delete">
+						</form>
+						</center>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endfor %} 
+{% endblock %} 

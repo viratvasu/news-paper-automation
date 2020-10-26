@@ -1,0 +1,48 @@
+<!-- delivery_details -->
+ {% extends 'base.html' %}
+  {% block links %}
+<center><a href="#">Change Password</a></center>
+{% endblock %}
+{% block top %}
+	{% if messages %}
+		{% for message in messages %}
+			<div class="alert alert-primary alert-dismissible fade show" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="left:0;">
+			    	<span aria-hidden="true">&times;</span>
+			  	</button>
+				<center><strong>{{ message }}</strong> </center>
+			</div>
+		{% endfor %}
+	{% endif %}
+{% endblock %}
+{% block content %} 
+	<h1>Your Delivery Addresses</h1>
+	{% for delivery_detail in delivery_details %}
+		{% if delivery_detail.get_papers %}
+			<div class="col-10 col-lg-6 mr-auto ml-auto">
+				<div class="row my-5 box" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="100">
+					<div class="col-12 col-lg-12" style="">
+						<div class="box-content-custom" style="height:auto;">
+							<center><h3>Name : {{delivery_detail.name | upper}}</h3></center>
+							<center><p>Contact Number : {{delivery_detail.pno}}</p></center>
+							<center><p>Door Number : {{delivery_detail.door_num}}</p></center>
+							<center><p>Village : {{delivery_detail.village}}</p></center>
+							<center><p>Mandal : {{delivery_detail.mandal}}</p></center>
+							<center><p>Pincode : {{delivery_detail.pincode}}</p></center>
+							<center><a href="#" class="success-btn">Deleveried</a> <a href="#" class="failure-btn">Can't Deleveried</a></center>
+							<!-- <p>Papers:{{delivery_detail.get_papers}}</p> -->
+							<center><h3>Papers</h3></center>
+							{% for paper in delivery_detail.get_papers %}
+								<center><p>{{paper}}</p></center>
+							{% endfor %}
+							<center><h3>Magazines</h3></center>
+							{% for magazine in delivery_detail.get_magazines %}
+								<center><p>{{magazine}}</p></center>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+	{% endfor %} 
+{% endblock %}

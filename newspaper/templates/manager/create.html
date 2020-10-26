@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+	    <meta charset="utf-8">
+	    <meta content="width=device-width, initial-scale=1" name="viewport" />
+	    <title>news wala</title>
+	    <link rel="stylesheet" href="{% static 'bootstrap/bootstrap.min.css'%}">
+	    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+	</head>
+	<body>
+		{% block top %}
+			{% if messages %}
+				{% for message in messages %}
+					<div class="alert alert-primary alert-dismissible fade show" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="left:0;">
+					    	<span aria-hidden="true">&times;</span>
+					  	</button>
+						<center><strong>{{ message }}</strong> </center>
+					</div>
+				{% endfor %}
+			{% endif %}
+		{% endblock %}
+		<div class="render-form col-11 col-md-8 col-lg-6 mr-auto ml-auto">
+			<h1>{{theme}} Paper Boy</h1>
+			<center>
+				<form method="POST">
+					{% csrf_token %}
+					{{form.as_p}}
+					{% if uform %}
+						{{uform.as_p}}
+					{% endif %}
+					<input type="submit" value="{{theme}} PaperBoy">
+				</form>
+		</center>
+		</div>
+	</body>
+</html>

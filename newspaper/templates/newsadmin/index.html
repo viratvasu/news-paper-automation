@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load my_tags %}
+{% block links %}
+<center><a href="{% url 'newsadmin:create_branch' %}">Add Branch</a></center>
+<center><a href="{% url 'newsadmin:create_newsPaper' %}">Add News Paper</a></center>
+<center><a href="{% url 'newsadmin:create_magazine' %}">Add Magazine</a></center>
+{% endblock %}
+{% block top %}
+	{% if messages %}
+		{% for message in messages %}
+			<div class="alert alert-primary alert-dismissible fade show" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="left:0;">
+			    	<span aria-hidden="true">&times;</span>
+			  	</button>
+				<center><strong>{{ message }}</strong> </center>
+			</div>
+		{% endfor %}
+	{% endif %}
+{% endblock %}
+{% block content %}  
+	<h1>Your Branches</h1>
+	{% for branch in availabel_branches %}
+		<div class="col-10 col-lg-6 mr-auto ml-auto">
+			<div class="row my-5 box" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="100">
+				<div class="col-12 col-lg-12" style="">
+					<div class="box-content-custom">
+						<center><h3>Name : {{branch | upper}}</h3></center>
+						<center><p>Contact Number : {{branch.pno}}</p></center>
+						<center><p>Address : {{branch.address}}</p></center>
+						<center><p>Manager : {{branch.branch_manager.manager_name}}</p></center>
+						<center><a href="{% url 'newsadmin:update_branch' branch.id %}">Update</a>
+						<form method="POST" action="{% url 'newsadmin:delete_branch'%}" style="display: inline-block;" class="delete_branch">
+							{% csrf_token %}
+							<input type="hidden" value="{{branch.id}}" name="id">
+							<input type="submit" value="Delete">
+						</form>
+						<!-- <center><p style="color:red">Deleted Sussesfully</p></center> -->
+					</center>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endfor %} 
+
+	<h1>Your News Papers</h1>
+	{% for news_paper in available_news_papers %}
+		<div class="col-10 col-lg-8 mr-auto ml-auto">
+			<div class="row my-5 box" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="100">
+				<!-- data-aos={% if forloop.counter|modulo:2 == 1%}zoom-in{% else %}zoom-out{% endif %} -->
+				<div class="col-12 col-lg-6 box-image" style="padding:10px;border-radius:24px;">
+					<img src="{{news_paper.image.url}}" alt="{{news_paper}}" style="border-radius:24px;" > 
+				</div>
+				<div class="col-12 col-lg-6" style="">
+					<div class="box-content-custom">
+						<center><h3>{{news_paper | upper}}</h3></center>
+						<center><p>&#8377 {{news_paper.price}} /-</p></center>
+						<center><p>{{news_paper.language}}</p></center>
+						<center><a href="{% url 'newsadmin:update_newsPaper' news_paper.id %}">Update</a>
+							<form method="POST" action="{% url 'newsadmin:delete_newsPaper'%}" style="display: inline-block;" class="delete_branch">
+								{% csrf_token %}
+								<input type="hidden" value="{{news_paper.id}}" name="id">
+								<input type="submit" value="Delete">
+							</form>
+						</center>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+
+	<h1>Your Magazines</h1>
+	{% for magazine in available_magazines %}
+		<div class="col-10 col-lg-8 mr-auto ml-auto">
+			<div class="row my-5 box" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="100">
+				<div class="col-12 col-lg-6 box-image" style="padding:10px;border-radius:24px;">
+					<img src="{{magazine.image.url}}" alt="{{magazine}}" style="border-radius:24px;" >
+				</div>
+				<div class="col-12 col-lg-6" style="">
+					<div class="box-content-custom">
+						<center><h3>{{magazine | upper}}</h3></center>
+						<center><p>&#8377 {{magazine.price}} /-</p></center>
+						<center><p>{{magazine.language}}</p></center>
+						<center><a href="{% url 'newsadmin:update_magazine' magazine.id %}">Update</a>
+							<form method="POST" action="{% url 'newsadmin:delete_magazine'%}" style="display: inline-block;" class="delete_branch">
+								{% csrf_token %}
+								<input type="hidden" value="{{magazine.id}}" name="id">
+								<input type="submit" value="Delete">
+							</form>
+						</center>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+{% endblock %}

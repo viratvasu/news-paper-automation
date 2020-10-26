@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block links %}
+ 	{% if request.user.is_authenticated %}
+		<center><a href="#">Change Password</a></center>
+		<center><a href="#">My Subscription</a></center>
+	{% endif %}
+{% endblock %}
+{% block top %}
+	{% if messages %}
+		{% for message in messages %}
+			<div class="alert alert-primary alert-dismissible fade show" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="left:0;">
+			    	<span aria-hidden="true">&times;</span>
+			  	</button>
+				<center><strong>{{ message }}</strong> </center>
+			</div>
+		{% endfor %}
+	{% endif %}
+{% endblock %}
+{% block content %}
+	<h1>Available News Papers</h1>
+	{% for news_paper in news_papers %}
+		<div class="col-10 col-lg-8 mr-auto ml-auto">
+			<div class="row my-5 box" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="100">
+				<div class="col-12 col-lg-6 box-image" style="padding:10px;border-radius:24px;">
+					<img src="{{news_paper.image.url}}" alt="{{news_paper}}" style="border-radius:24px;" > 
+				</div>
+				<div class="col-12 col-lg-6" style="">
+					<div class="box-content-custom">
+						<center><h3>{{news_paper | upper}}</h3></center>
+						<center><p>&#8377 {{news_paper.price}} /-</p></center>
+						<center><p>{{news_paper.language}}</p>
+							<form method="POST" action="{% url 'enduser:modify_news_papers_subscription'%}" style="display: inline-block;" class="change_subscription">
+								{% csrf_token %}
+								<input type="hidden" value="{{news_paper.id}}" name="id">
+								<input type="submit" value="{% if news_paper in user_subscriptions.news_papers.all%}Remove From Subscription{% else %}Subscribe This News Paper{% endif %}">
+							</form>
+						</center>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+
+
+	<h1>Available Magazines</h1>
+	{% for magazine in magazines %}
+		<div class="col-10 col-lg-8 mr-auto ml-auto">
+			<div class="row my-5 box" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="100">
+
+				<div class="col-12 col-lg-6 box-image" style="padding:10px;border-radius:24px;">
+					<img src="{{magazine.image.url}}" alt="{{magazine}}" style="border-radius:24px;" >
+				</div>
+				<div class="col-12 col-lg-6" style="">
+					<div class="box-content-custom">
+						<center><h3>{{magazine | upper}}</h3></center>
+						<center><p>&#8377 {{magazine.price}} /-</p></center>
+						<center><p>{{magazine.language}}</p></center>
+						<center><a href="{% url 'enduser:modify_magazines_subscription' magazine.id %}">{% if magazine in user_subscriptions.magazines.all %}Remove From Subscription{% else %}Subscribe This News Paper{% endif %}</a></center>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+<!-- 	<h1>Available Magazines</h1>
+	{% for magazine in magazines%}
+		<p>{{magazine}}</p>
+		<p>{{magazine.price}}</p>
+		<p>{{magazine.magazine_type}}</p>
+		<img src="{{magazine.image.url}}" alt={{magazine}} width="400" height="400">
+		<a href="#">{% if magazine in user_subscriptions.magazines.all%}Remove From Subscription{% else %}Subscribe This magazine{% endif %}</a>
+	{% endfor %} -->
+{% endblock %}
